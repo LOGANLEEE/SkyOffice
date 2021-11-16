@@ -1,8 +1,10 @@
 import http from 'http'
+import https from 'https'
 import express from 'express'
 import cors from 'cors'
 import { Server } from 'colyseus'
 import { monitor } from '@colyseus/monitor'
+import fs from 'fs'
 
 // import socialRoutes from "@colyseus/social/express"
 
@@ -15,7 +17,13 @@ app.use(cors())
 app.use(express.json())
 // app.use(express.static('dist'))
 
-const server = http.createServer(app)
+const server = https.createServer(
+  {
+    key: fs.readFileSync('./cert/server.key'),
+    cert: fs.readFileSync('./cert/server.cert'),
+  },
+  app
+)
 const gameServer = new Server({
   server,
 })
