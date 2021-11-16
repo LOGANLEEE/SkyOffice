@@ -19,7 +19,7 @@ export default class Network {
     //   process.env.NODE_ENV === 'production'
     //     ? `wss://sky-office.herokuapp.com`
     //     : `${protocol}//${window.location.hostname}:2567`
-    const endpoint = `${protocol}//${window.location.hostname}:2567`
+    const endpoint = `s${protocol}//${window.location.hostname}:2567`
     this.client = new Client(endpoint)
 
     phaserEvents.on(Event.MY_PLAYER_NAME_CHANGE, this.updatePlayerName, this)
