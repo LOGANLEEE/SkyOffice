@@ -14,7 +14,7 @@ export default class Network {
   mySessionId!: string
 
   constructor() {
-    const protocol = window.location.protocol.replace('http', 'ws').replace('https', 'ws')
+    const protocol = window.location.protocol.replace('http', 'ws')
     const endpoint =
       process.env.NODE_ENV === 'production'
         ? `wss://sky-office.herokuapp.com`
