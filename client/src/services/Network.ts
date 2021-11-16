@@ -14,12 +14,12 @@ export default class Network {
   mySessionId!: string
 
   constructor() {
-    // const protocol = window.location.protocol.replace('http', 'ws').replace('https', 'ws')
-    // const endpoint =
-    //   process.env.NODE_ENV === 'production'
-    //     ? `wss://sky-office.herokuapp.com`
-    //     : `${protocol}//${window.location.hostname}:2567`
-    const endpoint = `ws://${window.location.hostname}:2567`
+    const protocol = window.location.protocol.replace('http', 'ws').replace('https', 'ws')
+    const endpoint =
+      process.env.NODE_ENV === 'production'
+        ? `wss://sky-office.herokuapp.com`
+        : `${protocol}//${window.location.hostname}:2567`
+    // const endpoint = `ws://${window.location.hostname}:2567`
     this.client = new Client(endpoint)
 
     phaserEvents.on(Event.MY_PLAYER_NAME_CHANGE, this.updatePlayerName, this)

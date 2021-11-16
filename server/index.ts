@@ -17,14 +17,15 @@ app.use(cors())
 app.use(express.json())
 // app.use(express.static('dist'))
 
-// const server = https.createServer(
-//   {
-//     key: fs.readFileSync('./cert/cloudflare.key'),
-//     cert: fs.readFileSync('./cert/cloudflare.cert'),
-//   },
-//   app
-// )
-const server = http.createServer(app)
+const server = https.createServer(
+  {
+    key: fs.readFileSync('./cert/cloudflare.key'),
+    cert: fs.readFileSync('./cert/cloudflare.cert'),
+  },
+  app
+)
+
+// const server = http.createServer(app)
 const gameServer = new Server({
   server,
 })
