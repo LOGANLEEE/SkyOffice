@@ -19,8 +19,8 @@ app.use(express.json())
 
 const server = https.createServer(
   {
-    key: fs.readFileSync('./cert/server.key'),
-    cert: fs.readFileSync('./cert/server.cert'),
+    key: fs.readFileSync('./cert/cloudflare.key'),
+    cert: fs.readFileSync('./cert/cloudflare.cert'),
   },
   app
 )
