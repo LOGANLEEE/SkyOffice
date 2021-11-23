@@ -39,6 +39,7 @@
   "scripts": {
     "startSSL": "HTTPS=true SSL_CRT_FILE=./cert/cloudflare.cert SSL_KEY_FILE=./cert/cloudflare.key react-app-rewired start",
     "start": "react-app-rewired start",
+    "startFakeSSL": "HTTPS=true react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test"
   },
