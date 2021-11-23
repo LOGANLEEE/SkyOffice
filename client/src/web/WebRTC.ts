@@ -31,10 +31,23 @@ export default class WebRTC {
     this.initialize()
 
     // if permission has been granted before
-    const permissionName = 'microphone' as PermissionName
-    navigator.permissions.query({ name: permissionName }).then((result) => {
-      if (result.state === 'granted') this.getUserMedia()
-    })
+
+    const is_chrome = navigator.userAgent.indexOf('Chrome') > -1
+    const is_safari = navigator.userAgent.indexOf('Safari') > -1
+
+    if (!is_chrome && is_safari) {
+      if (navigator.mediaDevices !== undefined) {
+        //Req microphone permissions
+        navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+          this.getUserMedia()
+        })
+      }
+    } else {
+      const permissionName = 'microphone' as PermissionName
+      navigator.permissions.query({ name: permissionName }).then((result) => {
+        if (result.state === 'granted') this.getUserMedia()
+      })
+    }
   }
 
   // PeerJS throws invalid_id error if it contains some characters such as that colyseus generates.
