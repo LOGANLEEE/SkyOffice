@@ -19,8 +19,11 @@ import { setLoggedIn } from '../stores/UserStore'
 
 import phaserGame from '../PhaserGame'
 import Game from '../scenes/Game'
+import { detectMobile } from '../utils'
 
 SwiperCore.use([Navigation])
+const isMobile = detectMobile()
+console.debug('isMobile:', isMobile)
 
 const Wrapper = styled.div`
   position: fixed;
@@ -29,7 +32,9 @@ const Wrapper = styled.div`
   transform: translate(-50%, -50%);
   background: #222639;
   border-radius: 16px;
-  padding: 36px 60px;
+  /* padding: 36px 60px; */
+  padding: ${(isMobile) => (isMobile ? '10px 10px' : '36px 60px')};
+  width: ${(isMobile) => (isMobile ? '100%' : null)};
 `
 
 const Title = styled.h1`
@@ -51,7 +56,8 @@ const Content = styled.div`
 `
 
 const Left = styled.div`
-  margin-right: 48px;
+  /* margin-right: 48px; */
+  margin-right: ${(isMobile) => (isMobile ? '12px' : '48px')};
 
   --swiper-navigation-size: 24px;
 
