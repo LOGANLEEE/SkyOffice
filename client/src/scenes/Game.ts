@@ -1,20 +1,22 @@
 import Phaser from 'phaser'
-
+import { IJoystickUpdateEvent } from 'react-joystick-component/build/lib/Joystick'
+import { IPlayer } from '../../../types/IOfficeState'
+import { PlayerBehavior } from '../../../types/PlayerBehavior'
 // import { debugDraw } from '../utils/debug'
 import { createCharacterAnims } from '../anims/CharacterAnims'
-
-import Item from '../items/Item'
 import '../characters/MyPlayer'
-import '../characters/OtherPlayer'
 import MyPlayer from '../characters/MyPlayer'
-import PlayerSelector from '../characters/PlayerSelector'
-import Network from '../services/Network'
-import { IPlayer } from '../../../types/IOfficeState'
+import '../characters/OtherPlayer'
 import OtherPlayer from '../characters/OtherPlayer'
-import { PlayerBehavior } from '../../../types/PlayerBehavior'
-
+import PlayerSelector from '../characters/PlayerSelector'
+import { MobileController } from '../components/MobileController'
+import Item from '../items/Item'
+import Network from '../services/Network'
 import store from '../stores'
 import { setConnected } from '../stores/UserStore'
+import { detectMobile } from '../utils'
+
+const isMobile = detectMobile()
 
 export default class Game extends Phaser.Scene {
   network!: Network
@@ -22,6 +24,7 @@ export default class Game extends Phaser.Scene {
   private keyE!: Phaser.Input.Keyboard.Key
   private keyR!: Phaser.Input.Keyboard.Key
   private map!: Phaser.Tilemaps.Tilemap
+  // pointer: Phaser.Input.Pointer | undefined
   myPlayer!: MyPlayer
   private items!: Phaser.Physics.Arcade.StaticGroup
   private playerSelector!: Phaser.GameObjects.Zone
@@ -32,9 +35,9 @@ export default class Game extends Phaser.Scene {
   constructor() {
     super('game')
   }
-
   registerKeys() {
     this.cursors = this.input.keyboard.createCursorKeys()
+    // this.pointer = this.input.activePointer
     // maybe we can have a dedicated method for adding keys if more keys are needed in the future
     this.keyE = this.input.keyboard.addKey('E')
     this.keyR = this.input.keyboard.addKey('R')
@@ -223,11 +226,20 @@ export default class Game extends Phaser.Scene {
     computer?.removeCurrentUser(playerId)
     computer?.updateStatus()
   }
-
-  update(t: number, dt: number) {
+  update(t: number, dt: number, pointer?: IJoystickUpdateEvent) {
     if (this.myPlayer && this.network) {
-      this.playerSelector.update(this.myPlayer, this.cursors)
-      this.myPlayer.update(this.playerSelector, this.cursors, this.keyE, this.keyR, this.network)
+      // pointer && console.debug('with Pointer:', t, dt)
+      // !pointer && console.debug('without Pointer:', t, dt)
+      this.playerSelector.update(this.myPlayer, this.cursors, isMobile, pointer)
+      this.myPlayer.update(
+        this.playerSelector,
+        this.cursors,
+        this.keyE,
+        this.keyR,
+        this.network,
+        isMobile,
+        pointer
+      )
     }
   }
 }
