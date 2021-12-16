@@ -56,8 +56,8 @@ stop
     <Wrapper id="joyStick">
       <Joystick
         size={100}
-        baseColor="red"
-        stickColor="blue"
+        stickColor="#8b8383"
+        baseColor="#efc76e"
         start={updater}
         move={updater}
         stop={updater}
