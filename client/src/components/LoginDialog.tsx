@@ -22,8 +22,6 @@ import Game from '../scenes/Game'
 import { detectMobile } from '../utils'
 
 SwiperCore.use([Navigation])
-const isMobile = detectMobile()
-console.debug('isMobile:', isMobile)
 
 const Wrapper = styled.div`
   position: fixed;
@@ -33,8 +31,8 @@ const Wrapper = styled.div`
   background: #222639;
   border-radius: 16px;
   /* padding: 36px 60px; */
-  padding: ${(isMobile) => (isMobile ? '10px 10px' : '36px 60px')};
-  width: ${(isMobile) => (isMobile ? '100%' : null)};
+  padding: ${({ isMobile }) => (isMobile ? '10px 10px' : '36px 60px')};
+  width: ${({ isMobile }) => (isMobile ? '100%' : undefined)};
 `
 
 const Title = styled.h1`
@@ -57,7 +55,7 @@ const Content = styled.div`
 
 const Left = styled.div`
   /* margin-right: 48px; */
-  margin-right: ${(isMobile) => (isMobile ? '12px' : '48px')};
+  margin-right: ${({ isMobile }) => (isMobile ? '12px' : '48px')};
 
   --swiper-navigation-size: 24px;
 
@@ -117,12 +115,13 @@ export default function LoginDialog() {
   const dispatch = useAppDispatch()
   const connected = useAppSelector((state) => state.user.connected)
   const videoConnected = useAppSelector((state) => state.user.videoConnected)
+  const isMobile = detectMobile()
 
   return (
-    <Wrapper>
+    <Wrapper isMobile={isMobile}>
       <Title>Welcome to SkyOffice</Title>
       <Content>
-        <Left>
+        <Left isMobile={isMobile}>
           <SubTitle>Select an avatar</SubTitle>
           <Swiper
             // install Swiper modules
