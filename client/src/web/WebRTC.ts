@@ -104,10 +104,10 @@ export default class WebRTC {
       if (!this.onCalledVideos.has(sanitizedId)) {
         const call = this.myPeer.call(sanitizedId, this.myStream)
         const video = document.createElement('video')
-        call.on('stream', (userVideoStream) => {
+        call?.on('stream', (userVideoStream) => {
           this.addVideoStream(video, userVideoStream)
         })
-        call.on('close', () => {
+        call?.on('close', () => {
           video.remove()
         })
         this.peers.set(sanitizedId, call)
