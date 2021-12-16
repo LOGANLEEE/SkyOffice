@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 import store from '../stores'
+import { detectMobile } from '../utils'
 
+const isMobile = detectMobile()
 export default class Item extends Phaser.Physics.Arcade.Sprite {
   private dialogBox!: Phaser.GameObjects.Container
   private statusBox!: Phaser.GameObjects.Container
@@ -19,14 +21,16 @@ export default class Item extends Phaser.Physics.Arcade.Sprite {
   onOverlapDialog() {
     switch (this.texture.key) {
       case 'chairs':
-        this.setDialogBox('Press E to sit', 80)
+        isMobile ? this.setDialogBox('비활성화', 50) : this.setDialogBox('Press E to sit', 80)
         break
 
       case 'computers':
         if (this.currentUsers.length === 0) {
-          this.setDialogBox('Press R to use computer', 140)
+          isMobile
+            ? this.setDialogBox('비활성화', 50)
+            : this.setDialogBox('Press R to use computer', 140)
         } else {
-          this.setDialogBox('Press R join', 70)
+          isMobile ? this.setDialogBox('비활성화', 50) : this.setDialogBox('Press R join', 70)
         }
         break
     }
