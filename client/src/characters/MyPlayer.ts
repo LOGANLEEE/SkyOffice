@@ -1,12 +1,12 @@
 import Phaser from 'phaser'
-import PlayerSelector from './PlayerSelector'
+import { IJoystickUpdateEvent } from 'react-joystick-component/build/lib/Joystick'
 import { PlayerBehavior } from '../../../types/PlayerBehavior'
-import { sittingShiftData } from './Player'
-import Player from './Player'
-import Network from '../services/Network'
 import Item from '../items/Item'
+import Network from '../services/Network'
 import store from '../stores'
 import { openComputerDialog } from '../stores/ComputerStore'
+import Player, { sittingShiftData } from './Player'
+import PlayerSelector from './PlayerSelector'
 
 export default class MyPlayer extends Player {
   private playNameContainerBody: Phaser.Physics.Arcade.Body
@@ -22,15 +22,23 @@ export default class MyPlayer extends Player {
     super(scene, x, y, texture, id, frame)
     this.playNameContainerBody = this.playerNameContainer.body as Phaser.Physics.Arcade.Body
   }
-
   update(
     playerSelector: PlayerSelector,
     cursors: Phaser.Types.Input.Keyboard.CursorKeys,
     keyE: Phaser.Input.Keyboard.Key,
     keyR: Phaser.Input.Keyboard.Key,
-    network: Network
+    network: Network,
+    // pointer?: Phaser.Input.Pointer,
+    isMobile?: boolean,
+    pointer?: IJoystickUpdateEvent
   ) {
-    if (!cursors) return
+    // console.debug('test:', pointer, cursors)
+
+    if (isMobile) {
+      if (!pointer) return
+    } else {
+      if (!cursors) return
+    }
 
     const item = playerSelector.selectedItem
 
@@ -87,13 +95,14 @@ export default class MyPlayer extends Player {
         const speed = 200
         let vx = 0
         let vy = 0
-        if (cursors.left?.isDown) vx -= speed
-        if (cursors.right?.isDown) vx += speed
-        if (cursors.up?.isDown) {
+        // todo for mobile
+        if (cursors.left?.isDown || pointer?.direction === 'LEFT') vx -= speed
+        if (cursors.right?.isDown || pointer?.direction === 'RIGHT') vx += speed
+        if (cursors.up?.isDown || pointer?.direction === 'FORWARD') {
           vy -= speed
           this.setDepth(this.y) //change player.depth if player.y changes
         }
-        if (cursors.down?.isDown) {
+        if (cursors.down?.isDown || pointer?.direction === 'BACKWARD') {
           vy += speed
           this.setDepth(this.y) //change player.depth if player.y changes
         }
@@ -136,7 +145,7 @@ export default class MyPlayer extends Player {
           this.playerBehavior = PlayerBehavior.IDLE
           this.itemOnSit?.clearDialogBox()
           playerSelector.setPosition(this.x, this.y)
-          playerSelector.update(this, cursors)
+          playerSelector.update(this, cursors, isMobile, pointer)
           network.updatePlayer(this.x, this.y, this.anims.currentAnim.key)
         }
         break

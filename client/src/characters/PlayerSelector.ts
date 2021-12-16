@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import MyPlayer from './MyPlayer'
 import { PlayerBehavior } from '../../../types/PlayerBehavior'
 import Item from '../items/Item'
+import { IJoystickUpdateEvent } from 'react-joystick-component/build/lib/Joystick'
 
 export default class PlayerSelector extends Phaser.GameObjects.Zone {
   selectedItem?: Item
@@ -12,9 +13,16 @@ export default class PlayerSelector extends Phaser.GameObjects.Zone {
     scene.physics.add.existing(this)
   }
 
-  update(player: MyPlayer, cursors: Phaser.Types.Input.Keyboard.CursorKeys) {
-    if (!cursors) {
-      return
+  update(
+    player: MyPlayer,
+    cursors: Phaser.Types.Input.Keyboard.CursorKeys,
+    isMobile?: boolean,
+    pointer?: IJoystickUpdateEvent
+  ) {
+    if (isMobile) {
+      if (!pointer) return
+    } else {
+      if (!cursors) return
     }
 
     // no need to update player selection while sitting
@@ -24,13 +32,13 @@ export default class PlayerSelector extends Phaser.GameObjects.Zone {
 
     // update player selection box position so that it's always in front of the player
     const { x, y } = player
-    if (cursors.left?.isDown) {
+    if (cursors.left?.isDown || pointer?.direction === 'LEFT') {
       this.setPosition(x - 32, y)
-    } else if (cursors.right?.isDown) {
+    } else if (cursors.right?.isDown || pointer?.direction === 'RIGHT') {
       this.setPosition(x + 32, y)
-    } else if (cursors.up?.isDown) {
+    } else if (cursors.up?.isDown || pointer?.direction === 'FORWARD') {
       this.setPosition(x, y - 32)
-    } else if (cursors.down?.isDown) {
+    } else if (cursors.down?.isDown || pointer?.direction === 'BACKWARD') {
       this.setPosition(x, y + 32)
     }
 
