@@ -122,7 +122,7 @@ export default function LoginDialog() {
       <Title>Welcome to SkyOffice</Title>
       <Content>
         <Left isMobile={isMobile}>
-          <SubTitle>Select an avatar</SubTitle>
+          <SubTitle>아바타 선택</SubTitle>
           <Swiper
             // install Swiper modules
             navigation
@@ -162,7 +162,8 @@ export default function LoginDialog() {
             <Warning>
               <Alert severity="warning">
                 <AlertTitle>Warning</AlertTitle>
-                No webcam/mic connected - <strong>connect one for best experience!</strong>
+                웹캠/마이크 연결되지 않음. <br />
+                <strong>최상의 경험을 위해 연결해보세요!</strong>
               </Alert>
               <Button
                 variant="outlined"
@@ -172,14 +173,14 @@ export default function LoginDialog() {
                   game.network.webRTC?.getUserMedia()
                 }}
               >
-                Connect Webcam
+                웹캠 연결하기
               </Button>
             </Warning>
           )}
 
           {videoConnected && (
             <Warning>
-              <Alert>Webcam connected!</Alert>
+              <Alert>웹캠 연결됨!</Alert>
             </Warning>
           )}
         </Right>
@@ -205,7 +206,7 @@ export default function LoginDialog() {
             }
           }}
         >
-          Join
+          입장하기
         </Button>
       </Bottom>
     </Wrapper>
