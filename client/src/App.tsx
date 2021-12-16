@@ -1,11 +1,14 @@
 import React from 'react'
-
-import { useAppSelector } from './hooks'
-
-import LoginDialog from './components/LoginDialog'
 import ComputerDialog from './components/ComputerDialog'
+import LoginDialog from './components/LoginDialog'
+import { MobileController } from './components/MobileController'
 import VideoConnectionDialog from './components/VideoConnectionDialog'
+import { useAppSelector } from './hooks'
+import { detectMobile } from './utils'
+
 // import Debug from './components/Debug'
+
+const isMobile = detectMobile()
 
 function App() {
   const loggedIn = useAppSelector((state) => state.user.loggedIn)
@@ -18,6 +21,9 @@ function App() {
 
       {/* Render the LoginDialog if not logged in yet. */}
       {!loggedIn && <LoginDialog />}
+
+      {loggedIn && isMobile && <MobileController />}
+      {/* {loggedIn && isMobile && <VirtualJoyStick />} */}
 
       {/* Render the ComputerDialog if user is using a computer. */}
       {computerDialogOpen && <ComputerDialog />}
