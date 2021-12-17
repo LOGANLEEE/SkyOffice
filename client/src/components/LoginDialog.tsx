@@ -119,10 +119,10 @@ export default function LoginDialog() {
 
   return (
     <Wrapper isMobile={isMobile}>
-      <Title>Welcome to SkyOffice</Title>
+      <Title>크리플루아의 사무실입니다.</Title>
       <Content>
         <Left isMobile={isMobile}>
-          <SubTitle>아바타 선택</SubTitle>
+          <SubTitle>케릭터를 고르세요.</SubTitle>
           <Swiper
             // install Swiper modules
             navigation
