@@ -38,7 +38,7 @@ export default class WebRTC {
     if (!is_chrome && is_safari) {
       if (navigator.mediaDevices !== undefined) {
         //Req microphone permissions
-        navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+        navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then((stream) => {
           this.getUserMedia()
         })
       }
