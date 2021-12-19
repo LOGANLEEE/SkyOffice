@@ -79,7 +79,7 @@ export default class WebRTC {
     // ask the browser to get user media
     navigator.mediaDevices
       ?.getUserMedia({
-        video: true,
+        video: isSafari ? { facingMode: 'user' } : true,
         audio: true,
       })
       .then((stream) => {
