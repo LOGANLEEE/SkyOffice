@@ -126,8 +126,9 @@ export default class WebRTC {
     video.srcObject = stream
 
     video?.addEventListener('loadedmetadata', () => {
-      // if (!isSafari)
-      video.play()
+      if (!isSafari && !isMobile) {
+        video.play()
+      }
     })
     if (this.videoGrid) this.videoGrid.append(video)
   }
