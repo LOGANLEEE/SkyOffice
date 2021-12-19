@@ -3,6 +3,10 @@ import Network from '../services/Network'
 import store from '../stores'
 import { setVideoConnected } from '../stores/UserStore'
 
+const is_chrome = navigator.userAgent.indexOf('Chrome') > -1
+const is_safari = navigator.userAgent.indexOf('Safari') > -1
+
+const isSafari = !is_chrome && is_safari
 export default class WebRTC {
   private myPeer: Peer
   peers = new Map<string, Peer.MediaConnection>()
@@ -32,15 +36,10 @@ export default class WebRTC {
 
     // if permission has been granted before
 
-    const is_chrome = navigator.userAgent.indexOf('Chrome') > -1
-    const is_safari = navigator.userAgent.indexOf('Safari') > -1
-
-    if (!is_chrome && is_safari) {
+    if (isSafari) {
       if (navigator.mediaDevices !== undefined) {
         //Req microphone permissions
-        navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then((stream) => {
-          this.getUserMedia()
-        })
+        this.getUserMedia()
       }
     } else {
       const permissionName = 'microphone' as PermissionName
@@ -118,9 +117,18 @@ export default class WebRTC {
   // method to add new video stream to videoGrid div
   addVideoStream(video: HTMLVideoElement, stream: MediaStream) {
     video.srcObject = stream
-    video?.addEventListener('loadedmetadata', () => {
-      video?.play()
-    })
+    video.setAttribute('autoplay', '')
+    video.setAttribute('muted', '')
+    video.setAttribute('playsinline', '')
+
+    if (!isSafari) {
+      video?.addEventListener('loadedmetadata', () => {
+        video
+          .play()
+          .then((e) => console.debug('then:', e))
+          .catch((e) => console.debug('error:', e))
+      })
+    }
     if (this.videoGrid) this.videoGrid.append(video)
   }
 
