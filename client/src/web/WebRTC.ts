@@ -2,9 +2,12 @@ import Peer from 'peerjs'
 import Network from '../services/Network'
 import store from '../stores'
 import { setVideoConnected } from '../stores/UserStore'
+import { detectMobile } from '../utils'
 
 const is_chrome = navigator.userAgent.indexOf('Chrome') > -1
 const is_safari = navigator.userAgent.indexOf('Safari') > -1
+
+const isMobile = detectMobile()
 
 const isSafari = !is_chrome && is_safari
 export default class WebRTC {
@@ -30,8 +33,10 @@ export default class WebRTC {
 
     // mute your own video stream (you don't want to hear yourself)
     this.myVideo.muted = true
-    this.myVideo.playsInline = true
-    this.myVideo.autoplay = true
+    if (isMobile && isSafari) {
+      this.myVideo.playsInline = true
+      this.myVideo.autoplay = true
+    }
 
     // config peerJS
     this.initialize()
