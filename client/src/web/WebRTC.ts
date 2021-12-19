@@ -119,7 +119,7 @@ export default class WebRTC {
     video.srcObject = stream
     video.setAttribute('autoplay', '')
     video.setAttribute('muted', '')
-    video.setAttribute('playsinline', '')
+    // video.setAttribute('playsinline', '')
 
     if (!isSafari) {
       video?.addEventListener('loadedmetadata', () => {
