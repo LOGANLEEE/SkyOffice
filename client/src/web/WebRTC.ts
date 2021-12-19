@@ -79,7 +79,7 @@ export default class WebRTC {
     // ask the browser to get user media
     navigator.mediaDevices
       ?.getUserMedia({
-        video: isSafari ? { facingMode: 'user' } : true,
+        video: true,
         audio: true,
       })
       .then((stream) => {
@@ -117,18 +117,10 @@ export default class WebRTC {
   // method to add new video stream to videoGrid div
   addVideoStream(video: HTMLVideoElement, stream: MediaStream) {
     video.srcObject = stream
-    video.setAttribute('autoplay', '')
-    video.setAttribute('muted', '')
-    // video.setAttribute('playsinline', '')
 
-    if (!isSafari) {
-      video?.addEventListener('loadedmetadata', () => {
-        video
-          .play()
-          .then((e) => console.debug('then:', e))
-          .catch((e) => console.debug('error:', e))
-      })
-    }
+    video?.addEventListener('loadedmetadata', () => {
+      if (!isSafari) video.play()
+    })
     if (this.videoGrid) this.videoGrid.append(video)
   }
 
