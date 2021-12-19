@@ -30,6 +30,7 @@ export default class WebRTC {
 
     // mute your own video stream (you don't want to hear yourself)
     this.myVideo.muted = true
+    this.myVideo.pause()
 
     // config peerJS
     this.initialize()
@@ -119,7 +120,8 @@ export default class WebRTC {
     video.srcObject = stream
 
     video?.addEventListener('loadedmetadata', () => {
-      if (!isSafari) video.play()
+      // if (!isSafari)
+      video.play()
     })
     if (this.videoGrid) this.videoGrid.append(video)
   }
