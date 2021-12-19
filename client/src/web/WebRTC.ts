@@ -30,7 +30,7 @@ export default class WebRTC {
 
     // mute your own video stream (you don't want to hear yourself)
     this.myVideo.muted = true
-    this.myVideo.pause()
+    this.myVideo.playsInline = true
 
     // config peerJS
     this.initialize()
