@@ -126,11 +126,12 @@ export default class WebRTC {
     video.srcObject = stream
 
     video?.addEventListener('loadedmetadata', () => {
-      if (!isSafari && !isMobile) {
-        video.play()
-      }
+      // if (!isSafari && !isMobile) {
+      video.play().then(() => {
+        if (this.videoGrid) this.videoGrid.append(video)
+      })
+      // }
     })
-    if (this.videoGrid) this.videoGrid.append(video)
   }
 
   // method to remove video stream (when we are the host of the call)
