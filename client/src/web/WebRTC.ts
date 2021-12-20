@@ -33,10 +33,10 @@ export default class WebRTC {
 
     // mute your own video stream (you don't want to hear yourself)
     this.myVideo.muted = true
-    // if (isMobile && isSafari) {
-    //   this.myVideo.playsInline = true
-    //   this.myVideo.autoplay = true
-    // }
+    if (isMobile && isSafari) {
+      this.myVideo.playsInline = true
+      this.myVideo.autoplay = true
+    }
 
     // config peerJS
     this.initialize()
@@ -125,14 +125,6 @@ export default class WebRTC {
 
   // method to add new video stream to videoGrid div
   addVideoStream(video: HTMLVideoElement, stream: MediaStream) {
-    alert(`${isMobile}  ${isSafari}`)
-
-    if (isMobile && isSafari) {
-      video.playsInline = true
-      video.autoplay = true
-    }
-
-    alert(`after ${video.playsInline} ${video.autoplay}`)
     video.srcObject = stream
 
     video?.addEventListener('loadedmetadata', () => {
