@@ -111,8 +111,8 @@ export default class WebRTC {
         const call = this.myPeer.call(sanitizedId, this.myStream)
         const video = document.createElement('video')
         if (isMobile && isSafari) {
-          this.video.playsInline = true
-          this.video.autoplay = true
+          video.playsInline = true
+          video.autoplay = true
         }
 
         call?.on('stream', (userVideoStream) => {
