@@ -35,7 +35,7 @@ export default class WebRTC {
     this.myVideo.muted = true
     if (isMobile && isSafari) {
       // this.myVideo.playsInline = true
-      // this.myVideo.autoplay = true
+      this.myVideo.autoplay = true
     }
 
     // config peerJS
