@@ -113,6 +113,8 @@ export default class WebRTC {
         if (isMobile && isSafari) {
           video.playsInline = true
           video.autoplay = true
+          video.setAttribute('playinline', '')
+          video.setAttribute('autoplay', '')
         }
 
         call?.on('stream', (userVideoStream) => {
