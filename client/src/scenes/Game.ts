@@ -106,7 +106,7 @@ export default class Game extends Phaser.Scene {
     // import whiteboards objects from Tiled map to Phaser
     const whiteboards = this.physics.add.staticGroup({ classType: Whiteboard })
     const whiteboardLayer = this.map.getObjectLayer('Whiteboard')
-    whiteboardLayer.objects.forEach((obj, i) => {
+    whiteboardLayer?.objects.forEach((obj, i) => {
       const item = this.addObjectFromTiled(
         whiteboards,
         obj,
