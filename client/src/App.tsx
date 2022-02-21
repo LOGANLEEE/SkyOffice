@@ -11,6 +11,7 @@ import VideoConnectionDialog from './components/VideoConnectionDialog'
 import Chat from './components/Chat'
 import HelperButtonGroup from './components/HelperButtonGroup'
 import { detectMobile } from './utils'
+import { MobileController } from 'components/MobileController'
 
 const Backdrop = styled.div`
   position: absolute;
@@ -40,6 +41,8 @@ function App() {
         /* Render Chat or VideoConnectionDialog if no dialogs are opened. */
         <>
           <Chat />
+          {isMobile && <MobileController />}
+
           {/* Render VideoConnectionDialog if user is not connected to a webcam. */}
           {!videoConnected && <VideoConnectionDialog />}
         </>
@@ -57,7 +60,6 @@ function App() {
     <Backdrop>
       {ui}
       {/* Render HelperButtonGroup if no dialogs are opened. */}
-      {/* {loggedIn && isMobile && <MobileController />} */}
       {!computerDialogOpen && !whiteboardDialogOpen && <HelperButtonGroup />}
     </Backdrop>
   )
