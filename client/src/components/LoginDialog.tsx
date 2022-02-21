@@ -22,7 +22,9 @@ import { getAvatarString, getColorByString } from '../util'
 
 import phaserGame from '../PhaserGame'
 import Game from '../scenes/Game'
-import { detectMobile } from '../utils'
+import { detectMobile } from 'utils'
+
+const isMobile = detectMobile()
 
 SwiperCore.use([Navigation])
 
