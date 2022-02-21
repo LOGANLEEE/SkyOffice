@@ -1,22 +1,35 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { sanitizeId } from '../util'
+import { BackgroundMode } from '../../../types/BackgroundMode'
+
+import phaserGame from '../PhaserGame'
+import Bootstrap from '../scenes/Bootstrap'
+
+export function getInitialBackgroundMode() {
+  const currentHour = new Date().getHours()
+  return currentHour > 6 && currentHour <= 18 ? BackgroundMode.DAY : BackgroundMode.NIGHT
+}
 
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
+    backgroundMode: getInitialBackgroundMode(),
     sessionId: '',
-    connected: false,
     videoConnected: false,
-    videoConnectionWarning: true,
     loggedIn: false,
     playerNameMap: new Map<string, string>(),
   },
   reducers: {
+    toggleBackgroundMode: (state) => {
+      const newMode =
+        state.backgroundMode === BackgroundMode.DAY ? BackgroundMode.NIGHT : BackgroundMode.DAY
+
+      state.backgroundMode = newMode
+      const bootstrap = phaserGame.scene.keys.bootstrap as Bootstrap
+      bootstrap.changeBackgroundMode(newMode)
+    },
     setSessionId: (state, action: PayloadAction<string>) => {
       state.sessionId = action.payload
-    },
-    setConnected: (state, action: PayloadAction<boolean>) => {
-      state.connected = action.payload
     },
     setVideoConnected: (state, action: PayloadAction<boolean>) => {
       state.videoConnected = action.payload
@@ -30,20 +43,16 @@ export const userSlice = createSlice({
     removePlayerNameMap: (state, action: PayloadAction<string>) => {
       state.playerNameMap.delete(sanitizeId(action.payload))
     },
-    closeVideoConnectionWarning: (state) => {
-      state.videoConnectionWarning = false
-    },
   },
 })
 
 export const {
+  toggleBackgroundMode,
   setSessionId,
-  setConnected,
   setVideoConnected,
   setLoggedIn,
   setPlayerNameMap,
   removePlayerNameMap,
-  closeVideoConnectionWarning,
 } = userSlice.actions
 
 export default userSlice.reducer

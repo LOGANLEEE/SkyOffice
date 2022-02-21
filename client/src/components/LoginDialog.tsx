@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import Avatar from '@mui/material/Avatar'
 import Alert from '@mui/material/Alert'
 import AlertTitle from '@mui/material/AlertTitle'
+import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Navigation } from 'swiper'
@@ -16,6 +18,7 @@ import Lucy from '../assets/Lucy_login.png'
 import Nancy from '../assets/Nancy_login.png'
 import { useAppSelector, useAppDispatch } from '../hooks'
 import { setLoggedIn } from '../stores/UserStore'
+import { getAvatarString, getColorByString } from '../util'
 
 import phaserGame from '../PhaserGame'
 import Game from '../scenes/Game'
@@ -23,22 +26,50 @@ import { detectMobile } from '../utils'
 
 SwiperCore.use([Navigation])
 
-const Wrapper = styled.div`
+const Wrapper = styled.form`
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: #222639;
   border-radius: 16px;
-  /* padding: 36px 60px; */
-  padding: ${({ isMobile }) => (isMobile ? '10px 10px' : '36px 60px')};
-  width: ${({ isMobile }) => (isMobile ? '100%' : undefined)};
+  padding: 36px 60px;
+  box-shadow: 0px 0px 5px #0000006f;
+  /* padding: ${({ isMobile }) => (isMobile ? '10px 10px' : '36px 60px')};
+  width: ${({ isMobile }) => (isMobile ? '100%' : undefined)}; */
 `
 
-const Title = styled.h1`
-  font-size: 24px;
-  color: #eee;
+const Title = styled.p`
+  margin: 5px;
+  font-size: 20px;
+  color: #c2c2c2;
   text-align: center;
+`
+
+const RoomName = styled.div`
+  max-width: 500px;
+  max-height: 120px;
+  overflow-wrap: anywhere;
+  overflow-y: auto;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+
+  h3 {
+    font-size: 24px;
+    color: #eee;
+  }
+`
+
+const RoomDescription = styled.div`
+  max-width: 500px;
+  max-height: 150px;
+  overflow-wrap: anywhere;
+  overflow-y: auto;
+  font-size: 16px;
+  color: #c2c2c2;
+  display: flex;
+  justify-content: center;
 `
 
 const SubTitle = styled.h3`
@@ -108,18 +139,49 @@ const avatars = [
   { name: 'nancy', img: Nancy },
 ]
 
+// shuffle the avatars array
+for (let i = avatars.length - 1; i > 0; i--) {
+  const j = Math.floor(Math.random() * (i + 1))
+  ;[avatars[i], avatars[j]] = [avatars[j], avatars[i]]
+}
+
 export default function LoginDialog() {
   const [name, setName] = useState<string>('')
   const [avatarIndex, setAvatarIndex] = useState<number>(0)
   const [nameFieldEmpty, setNameFieldEmpty] = useState<boolean>(false)
   const dispatch = useAppDispatch()
-  const connected = useAppSelector((state) => state.user.connected)
   const videoConnected = useAppSelector((state) => state.user.videoConnected)
-  const isMobile = detectMobile()
+  const roomJoined = useAppSelector((state) => state.room.roomJoined)
+  const roomName = useAppSelector((state) => state.room.roomName)
+  const roomDescription = useAppSelector((state) => state.room.roomDescription)
+  const game = phaserGame.scene.keys.game as Game
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (name === '') {
+      setNameFieldEmpty(true)
+    } else if (roomJoined) {
+      console.log('Join! Name:', name, 'Avatar:', avatars[avatarIndex].name)
+      game.registerKeys()
+      game.myPlayer.setPlayerName(name)
+      game.myPlayer.setPlayerTexture(avatars[avatarIndex].name)
+      game.network.readyToConnect()
+      dispatch(setLoggedIn(true))
+    }
+  }
 
   return (
-    <Wrapper isMobile={isMobile}>
-      <Title>크리플루아의 사무실입니다.</Title>
+    <Wrapper onSubmit={handleSubmit} isMobile={isMobile}>
+      <Title>크리플루아의 사무실</Title>
+      <RoomName>
+        <Avatar style={{ background: getColorByString(roomName) }}>
+          {getAvatarString(roomName)}
+        </Avatar>
+        <h3>{roomName}</h3>
+      </RoomName>
+      <RoomDescription>
+        <ArrowRightIcon /> {roomDescription}
+      </RoomDescription>
       <Content>
         <Left isMobile={isMobile}>
           <SubTitle>케릭터를 고르세요.</SubTitle>
@@ -130,8 +192,6 @@ export default function LoginDialog() {
             slidesPerView={1}
             onSlideChange={(swiper) => {
               setAvatarIndex(swiper.activeIndex)
-              const game = phaserGame.scene.keys.game as Game
-              game.myPlayer?.setPlayerTexture(avatars[avatarIndex].name)
             }}
           >
             {avatars.map((avatar) => (
@@ -152,15 +212,11 @@ export default function LoginDialog() {
             helperText={nameFieldEmpty && 'Name is required'}
             onInput={(e) => {
               setName((e.target as HTMLInputElement).value)
-              if (connected) {
-                const game = phaserGame.scene.keys.game as Game
-                game.myPlayer.setPlayerName(name)
-              }
             }}
           />
           {!videoConnected && (
             <Warning>
-              <Alert severity="warning">
+              <Alert variant="outlined" severity="warning">
                 <AlertTitle>Warning</AlertTitle>
                 웹캠/마이크 연결되지 않음. <br />
                 <strong>최상의 경험을 위해 연결해보세요!</strong>
@@ -169,7 +225,6 @@ export default function LoginDialog() {
                 variant="outlined"
                 color="secondary"
                 onClick={() => {
-                  const game = phaserGame.scene.keys.game as Game
                   game.network.webRTC?.getUserMedia()
                 }}
               >
@@ -180,33 +235,14 @@ export default function LoginDialog() {
 
           {videoConnected && (
             <Warning>
-              <Alert>웹캠 연결됨!</Alert>
+              <Alert variant="outlined">웹캠 연결됨!</Alert>
             </Warning>
           )}
         </Right>
       </Content>
       <Bottom>
-        <Button
-          variant="contained"
-          color="secondary"
-          size="large"
-          onClick={() => {
-            if (name === '') {
-              setNameFieldEmpty(true)
-            } else {
-              if (connected) {
-                console.log('Join! Name:', name, 'Avatar:', avatars[avatarIndex].name)
-                const game = phaserGame.scene.keys.game as Game
-                game.registerKeys()
-                game.myPlayer.setPlayerName(name)
-                game.myPlayer.setPlayerTexture(avatars[avatarIndex].name)
-                game.network.readyToConnect()
-                dispatch(setLoggedIn(true))
-              }
-            }
-          }}
-        >
-          입장하기
+        <Button variant="contained" color="secondary" size="large" type="submit">
+          Join
         </Button>
       </Bottom>
     </Wrapper>
