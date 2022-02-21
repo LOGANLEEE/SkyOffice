@@ -32,28 +32,28 @@ export default class WebRTC {
     })
 
     // mute your own video stream (you don't want to hear yourself)
-    this.myVideo.muted = true
-    if (isMobile && isSafari) {
-      this.myVideo.playsInline = true
-      this.myVideo.autoplay = true
-    }
+    // this.myVideo.muted = true
+    // if (isMobile && isSafari) {
+    //   this.myVideo.playsInline = true
+    //   this.myVideo.autoplay = true
+    // }
 
     // config peerJS
     this.initialize()
 
     // if permission has been granted before
 
-    if (isSafari) {
-      if (navigator.mediaDevices !== undefined) {
-        //Req microphone permissions
-        this.getUserMedia()
-      }
-    } else {
-      const permissionName = 'microphone' as PermissionName
-      navigator.permissions.query({ name: permissionName }).then((result) => {
-        if (result.state === 'granted') this.getUserMedia()
-      })
-    }
+    // if (isSafari) {
+    //   if (navigator.mediaDevices !== undefined) {
+    //     //Req microphone permissions
+    //     this.getUserMedia()
+    //   }
+    // } else {
+    //   const permissionName = 'microphone' as PermissionName
+    //   navigator.permissions.query({ name: permissionName }).then((result) => {
+    //     if (result.state === 'granted') this.getUserMedia()
+    //   })
+    // }
   }
 
   // PeerJS throws invalid_id error if it contains some characters such as that colyseus generates.
