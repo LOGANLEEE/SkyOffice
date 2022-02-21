@@ -1,2 +1,3 @@
-export const detectMobile = () =>
-  navigator.userAgent.toLowerCase().indexOf('mobile') > 0 ? true : false
+import { isMobile } from 'react-device-detect'
+
+export const detectMobile = () => isMobile

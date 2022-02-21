@@ -10,6 +10,7 @@ import WhiteboardDialog from './components/WhiteboardDialog'
 import VideoConnectionDialog from './components/VideoConnectionDialog'
 import Chat from './components/Chat'
 import HelperButtonGroup from './components/HelperButtonGroup'
+import { detectMobile } from './utils'
 
 const Backdrop = styled.div`
   position: absolute;
