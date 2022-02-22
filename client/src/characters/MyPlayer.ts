@@ -50,11 +50,11 @@ export default class MyPlayer extends Player {
   ) {
     // console.debug('test:', pointer, cursors)
 
-    if (isMobile) {
-      if (!pointer) return
-    } else {
-      if (!cursors) return
-    }
+    // if (isMobile) {
+    //   if (!pointer) return
+    // } else {
+    //   if (!cursors) return
+    // }
 
     const item = playerSelector.selectedItem
 
@@ -118,7 +118,7 @@ export default class MyPlayer extends Player {
           })
           // set up new dialog as player sits down
           chairItem.clearDialogBox()
-          chairItem.setDialogBox('Press E to leave')
+          chairItem.setDialogBox('일어나기(E)')
           this.chairOnSit = chairItem
           this.playerBehavior = PlayerBehavior.SITTING
           return

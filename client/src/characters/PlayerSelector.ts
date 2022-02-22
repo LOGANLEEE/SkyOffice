@@ -19,11 +19,11 @@ export default class PlayerSelector extends Phaser.GameObjects.Zone {
     isMobile?: boolean,
     pointer?: IJoystickUpdateEvent
   ) {
-    if (isMobile) {
-      if (!pointer) return
-    } else {
-      if (!cursors) return
-    }
+    // if (isMobile) {
+    //   if (!pointer) return
+    // } else {
+    //   if (!cursors) return
+    // }
 
     // no need to update player selection while sitting
     if (player.playerBehavior === PlayerBehavior.SITTING) {
