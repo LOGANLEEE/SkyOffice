@@ -61,7 +61,7 @@ stop
         start={updater}
         move={updater}
         stop={updater}
-      ></Joystick>
+      />
     </Wrapper>
   )
 }
