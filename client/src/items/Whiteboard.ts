@@ -27,9 +27,9 @@ export default class Whiteboard extends Item {
 
   onOverlapDialog() {
     if (this.currentUsers.size === 0) {
-      this.setDialogBox('Press R to use whiteboard')
+      this.setDialogBox('화이트 보드 사용(R)')
     } else {
-      this.setDialogBox('Press R join')
+      this.setDialogBox('참여하기(R)')
     }
   }
 
