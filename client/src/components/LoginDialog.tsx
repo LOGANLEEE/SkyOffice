@@ -35,10 +35,9 @@ const Wrapper = styled.form`
   transform: translate(-50%, -50%);
   background: #222639;
   border-radius: 16px;
-  padding: 36px 60px;
   box-shadow: 0px 0px 5px #0000006f;
-  /* padding: ${({ isMobile }) => (isMobile ? '10px 10px' : '36px 60px')};
-  width: ${({ isMobile }) => (isMobile ? '100%' : undefined)}; */
+  padding: ${({ isMobile }) => (isMobile ? '10px 10px' : '36px 60px')};
+  width: ${({ isMobile }) => (isMobile ? '98%' : undefined)};
 `
 
 const Title = styled.p`

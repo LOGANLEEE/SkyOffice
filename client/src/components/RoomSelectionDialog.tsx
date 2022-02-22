@@ -16,6 +16,9 @@ import { useAppSelector } from '../hooks'
 
 import phaserGame from '../PhaserGame'
 import Bootstrap from '../scenes/Bootstrap'
+import { detectMobile } from 'utils'
+
+const isMobile = detectMobile()
 
 const Backdrop = styled.div`
   position: absolute;
@@ -33,6 +36,7 @@ const Wrapper = styled.div`
   border-radius: 16px;
   padding: 36px 60px;
   box-shadow: 0px 0px 5px #0000006f;
+  width: ${({ isMobile }) => (isMobile ? '40vh' : '')};
 `
 
 const CustomRoomWrapper = styled.div`
@@ -122,11 +126,11 @@ export default function RoomSelectionDialog() {
           // overwrites the dark theme on render
           style={{ background: '#fdeded', color: '#7d4747' }}
         >
-          Trying to connect to server, please try again!
+          서버에 연결 중 입니다...
         </Alert>
       </Snackbar>
       <Backdrop>
-        <Wrapper>
+        <Wrapper isMobile={isMobile}>
           {showCreateRoomForm ? (
             <CustomRoomWrapper>
               <Title>Create Custom Room</Title>
@@ -140,7 +144,7 @@ export default function RoomSelectionDialog() {
           ) : showCustomRoom ? (
             <CustomRoomWrapper>
               <Title>
-                Custom Rooms
+                커스텀 방
                 <Tooltip
                   title="We update the results in realtime, no refresh needed!"
                   placement="top"
@@ -161,23 +165,27 @@ export default function RoomSelectionDialog() {
                 color="secondary"
                 onClick={() => setShowCreateRoomForm(true)}
               >
-                Create new room
+                새 방 만들기
               </Button>
             </CustomRoomWrapper>
           ) : (
             <>
-              <Title>Welcome to SkyOffice</Title>
+              <Title>
+                크리플루아에 오신 걸
+                <br />
+                환영합니다.!
+              </Title>
               <Content>
                 <img src={logo} alt="logo" />
                 <Button variant="contained" color="secondary" onClick={handleConnect}>
-                  Connect to public lobby
+                  공용 사무실 입장
                 </Button>
                 <Button
                   variant="outlined"
                   color="secondary"
                   onClick={() => (lobbyJoined ? setShowCustomRoom(true) : setShowSnackbar(true))}
                 >
-                  Create/find custom rooms
+                  방 목록
                 </Button>
               </Content>
             </>
@@ -185,7 +193,7 @@ export default function RoomSelectionDialog() {
         </Wrapper>
         {!lobbyJoined && (
           <ProgressBarWrapper>
-            <h3> Connecting to server...</h3>
+            <h3> 서버에 연결 중...</h3>
             <ProgressBar color="secondary" />
           </ProgressBarWrapper>
         )}
