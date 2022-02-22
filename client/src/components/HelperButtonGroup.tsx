@@ -130,11 +130,11 @@ export default function HelperButtonGroup() {
               <ArrowRightIcon /> ID: {roomId}
             </RoomDescription>
             <RoomDescription>
-              <ArrowRightIcon /> Description: {roomDescription}
+              <ArrowRightIcon /> 방 설명: {roomDescription}
             </RoomDescription>
             <p className="tip">
               <LightbulbIcon />
-              Shareable link coming up 😄
+              링크 공유 가능 개발 중 😄
             </p>
           </Wrapper>
         )}
@@ -163,7 +163,7 @@ export default function HelperButtonGroup() {
             </ul>
             <p className="tip">
               <LightbulbIcon />
-              Video connection will start if you are close to someone else
+              누군가에게 가까이 다가가면 비디오가 연결되요!
             </p>
           </Wrapper>
         )}
