@@ -195,7 +195,7 @@ export default function HelperButtonGroup() {
             </Tooltip>
           </>
         )}
-        <Tooltip title="Visit Our GitHub">
+        {/* <Tooltip title="Visit Our GitHub">
           <StyledFab
             size="small"
             href="https://github.com/kevinshen56714/SkyOffice"
@@ -208,7 +208,7 @@ export default function HelperButtonGroup() {
           <StyledFab size="small" href="https://twitter.com/SkyOfficeApp" target="_blank">
             <TwitterIcon />
           </StyledFab>
-        </Tooltip>
+        </Tooltip> */}
         <Tooltip title="Switch Background Theme">
           <StyledFab size="small" onClick={() => dispatch(toggleBackgroundMode())}>
             {backgroundMode === BackgroundMode.DAY ? <DarkModeIcon /> : <LightModeIcon />}

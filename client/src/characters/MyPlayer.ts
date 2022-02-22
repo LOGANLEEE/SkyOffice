@@ -50,11 +50,11 @@ export default class MyPlayer extends Player {
   ) {
     // console.debug('test:', pointer, cursors)
 
-    // if (isMobile) {
-    //   if (!pointer) return
-    // } else {
-    //   if (!cursors) return
-    // }
+    if (isMobile) {
+      if (!pointer) return
+    } else {
+      if (!cursors) return
+    }
 
     const item = playerSelector.selectedItem
 
